@@ -45,23 +45,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // Audio is disabled on the PSP by default, but enabled on other platforms.
 #ifdef DAEDALUS_PSP
 static const EAudioPluginMode      kDefaultAudioPluginMode      = APM_DISABLED;
-static const ETextureHashFrequency kDefaultTextureHashFrequency = THF_DISABLED;
 #else
 static const EAudioPluginMode      kDefaultAudioPluginMode      = APM_ENABLED_SYNC;
-static const ETextureHashFrequency kDefaultTextureHashFrequency = THF_EVERY_FRAME;
 #endif
 
-static u32						GetTexureHashFrequencyAsFrames( ETextureHashFrequency thf );
+static const ETextureHashFrequency kDefaultTextureHashFrequency = THF_EVERY_FRAME;
+
+static u32			GetTexureHashFrequencyAsFrames( ETextureHashFrequency thf );
 static ETextureHashFrequency	GetTextureHashFrequencyFromFrames( u32 frames );
 
-static u32						GetFrameskipValueAsInt( EFrameskipValue value );
-static EFrameskipValue			GetFrameskipValueFromInt( u32 value );
+static u32			GetFrameskipValueAsInt( EFrameskipValue value );
+static EFrameskipValue		GetFrameskipValueFromInt( u32 value );
 
 
-extern EFrameskipValue			gFrameskipValue;
-extern f32 						gZoomX;
+extern EFrameskipValue		gFrameskipValue;
+extern f32 			gZoomX;
 
-SGlobalPreferences				gGlobalPreferences;
+SGlobalPreferences		gGlobalPreferences;
 
 class IPreferences : public CPreferences
 {
@@ -307,7 +307,7 @@ void IPreferences::OutputSectionDetails( const RomID & id, const SRomPreferences
 	fprintf(fh, "DynarecDoublesOptimisation=%d\n", preferences.DynarecDoublesOptimisation);
 	fprintf(fh, "DoubleDisplayEnabled=%d\n",       preferences.DoubleDisplayEnabled);
 	fprintf(fh, "CleanSceneEnabled=%d\n",          preferences.CleanSceneEnabled);
-	fprintf(fh, "ClearDepthFrameBuffer=%d\n",	   preferences.ClearDepthFrameBuffer);
+	fprintf(fh, "ClearDepthFrameBuffer=%d\n",      preferences.ClearDepthFrameBuffer);
 	fprintf(fh, "AudioRateMatch=%d\n",             preferences.AudioRateMatch);
 	fprintf(fh, "VideoRateMatch=%d\n",             preferences.VideoRateMatch);
 	fprintf(fh, "FogEnabled=%d\n",                 preferences.FogEnabled);
@@ -437,7 +437,7 @@ SRomPreferences::SRomPreferences()
 	,	AudioRateMatch( false )
 	,	VideoRateMatch( false )
 	,	FogEnabled( false )
-	,   MemoryAccessOptimisation( true )
+	,	MemoryAccessOptimisation( true )
 	,	CheatsEnabled( false )
 //	,	AudioAdaptFrequency( false )
 	,	CheckTextureHashFrequency( kDefaultTextureHashFrequency )
@@ -477,8 +477,8 @@ void SRomPreferences::Apply() const
 	gOSHooksEnabled             = PatchesEnabled;
 	gSpeedSyncEnabled           = SpeedSyncEnabled;
 	gDynarecEnabled             = g_ROM.settings.DynarecSupported && DynarecEnabled;
-	gDynarecLoopOptimisation	= DynarecLoopOptimisation;	// && g_ROM.settings.DynarecLoopOptimisation;
-	gDynarecDoublesOptimisation	= g_ROM.settings.DynarecDoublesOptimisation || DynarecDoublesOptimisation;
+	gDynarecLoopOptimisation    = DynarecLoopOptimisation;	// && g_ROM.settings.DynarecLoopOptimisation;
+	gDynarecDoublesOptimisation = g_ROM.settings.DynarecDoublesOptimisation || DynarecDoublesOptimisation;
 	gDoubleDisplayEnabled       = g_ROM.settings.DoubleDisplayEnabled && DoubleDisplayEnabled; // I don't know why DD won't disabled if we set ||
 	gCleanSceneEnabled          = g_ROM.settings.CleanSceneEnabled || CleanSceneEnabled;
 	gClearDepthFrameBuffer      = g_ROM.settings.ClearDepthFrameBuffer || ClearDepthFrameBuffer;
@@ -492,7 +492,7 @@ void SRomPreferences::Apply() const
 	gCheatsEnabled              = g_ROM.settings.CheatsEnabled || CheatsEnabled;
 	gAudioPluginEnabled         = AudioEnabled;
 //	gAdaptFrequency             = AudioAdaptFrequency;
-	gControllerIndex            = ControllerIndex;							//Used during ROM initialization
+	gControllerIndex            = ControllerIndex;		//Used during ROM initialization
 #ifdef DAEDALUS_PSP
 	CInputManager::Get()->SetConfiguration( ControllerIndex );  //Used after initialization
 #endif
@@ -512,7 +512,7 @@ static const u32 gTextureHashFreqeuncies[] =
 
 static const char * const gTextureHashFreqeuncyDescriptions[] =
 {
-	"Disabled",			//THF_DISABLED = 0,
+	"Disabled",		//THF_DISABLED = 0,
 	"Every Frame",		//THF_EVERY_FRAME,
 	"Every 2 Frames",	//THF_EVERY_2,
 	"Every 4 Frames",	//THF_EVERY_4,
@@ -575,9 +575,9 @@ const char * Preferences_GetFrameskipDescription( EFrameskipValue value )
 {
 	switch( value )
 	{
-	case FV_DISABLED:		return "Disabled";
-	case FV_AUTO1:			return "Auto 1";
-	case FV_AUTO2:			return "Auto 2";
+	case FV_DISABLED:			return "Disabled";
+	case FV_AUTO1:				return "Auto 1";
+	case FV_AUTO2:				return "Auto 2";
 	case FV_1:				return "1";
 	case FV_2:				return "2";
 	case FV_3:				return "3";
