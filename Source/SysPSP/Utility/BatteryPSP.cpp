@@ -31,7 +31,8 @@ void battery_warning()
 {
 	if( scePowerIsBatteryCharging() ) return;
 	int bat {scePowerGetBatteryLifePercent()};
-	if (bat > 9) return;	//No warning unless battery is under 10%
+    if (bat > 16) return;	// No warning unless battery is 15 or less
+                            // PSP Go/Street do not report accurate readings and round low battery to 12%
 
 	static u32 counter {0};
 
